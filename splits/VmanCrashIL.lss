@@ -17,6 +17,15 @@
       <SegmentHistory />
     </Segment>
     <Segment>
+      <Name>Course 1 Start</Name>
+      <Icon />
+      <SplitTimes>
+        <SplitTime name="Personal Best" />
+      </SplitTimes>
+      <BestSegmentTime />
+      <SegmentHistory />
+    </Segment>
+    <Segment>
       <Name>Course 1</Name>
       <Icon />
       <SplitTimes>
@@ -27,6 +36,15 @@
     </Segment>
     <Segment>
       <Name>Wall Jump</Name>
+      <Icon />
+      <SplitTimes>
+        <SplitTime name="Personal Best" />
+      </SplitTimes>
+      <BestSegmentTime />
+      <SegmentHistory />
+    </Segment>
+    <Segment>
+      <Name>Course 2 Start</Name>
       <Icon />
       <SplitTimes>
         <SplitTime name="Personal Best" />
