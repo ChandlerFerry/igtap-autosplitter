@@ -75,6 +75,8 @@ impl Settings {
 const FLAGS: usize = 10;
 const COURSES: usize = 10;
 const OVERGROWN: usize = 5;
+const DASH: usize = 1;
+const OMNIDASH: usize = 4;
 
 #[derive(Clone, Copy, Default, Debug)]
 struct Course {
@@ -96,6 +98,7 @@ struct Snap {
     vman: bool,
     moved: bool,
     overgrown: bool,
+    dashes: i32,
     flags: [bool; FLAGS],
     courses: [Course; COURSES],
 }
@@ -152,7 +155,11 @@ fn step(mode: Mode, enabled: &[bool; FLAGS + 1], run: &mut Run, prev: &Snap, now
     if out.start {
         run.done = 0;
     }
-    let flags = (0..FLAGS).filter(|&i| same && enabled[i] && !prev.flags[i] && now.flags[i]);
+    let rose = |i: usize| match i {
+        DASH => now.dashes > prev.dashes && now.flags[OMNIDASH] == prev.flags[OMNIDASH],
+        _ => !prev.flags[i] && now.flags[i],
+    };
+    let flags = (0..FLAGS).filter(|&i| same && enabled[i] && rose(i));
     let clears = (0..COURSES)
         .filter(|&i| enabled[FLAGS] && finished(i))
         .map(|i| {
@@ -179,6 +186,7 @@ struct Movement {
     jumpBuffer: bool,
     cutsceneMode: i32,
     longfallMult: f32,
+    maxAirDashes: i32,
     wallJumpUnlocked: bool,
     dashUnlocked: bool,
     doubleJumpUnlocked: bool,
@@ -343,6 +351,7 @@ impl Game {
             vman,
             moved: m.MoveAxis != [0.0; 2] || m.jumpBuffer,
             overgrown: a1 == 2,
+            dashes: m.maxAirDashes,
             flags: [
                 m.wallJumpUnlocked,
                 m.dashUnlocked,
@@ -535,8 +544,15 @@ mod tests {
                 splits: 0
             }
         );
-        let mut end = bought;
+        let mut omni = bought;
+        omni.flags[DASH] = true;
+        omni.flags[OMNIDASH] = true;
+        omni.dashes = 1;
+        assert_eq!(step(Mode::VmanIl, &ALL, &mut run, &bought, &omni).splits, 1);
+        let dash = Snap { dashes: 2, ..omni };
+        assert_eq!(step(Mode::VmanIl, &ALL, &mut run, &omni, &dash).splits, 1);
+        let mut end = dash;
         end.flags[9] = true;
-        assert_eq!(step(Mode::VmanIl, &ALL, &mut run, &bought, &end).splits, 1);
+        assert_eq!(step(Mode::VmanIl, &ALL, &mut run, &dash, &end).splits, 1);
     }
 }
