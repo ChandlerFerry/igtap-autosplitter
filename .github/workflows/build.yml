@@ -34,7 +34,9 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
-          files: target/wasm32-unknown-unknown/release/igtap_autosplitter.wasm
+          files: |
+            target/wasm32-unknown-unknown/release/igtap_autosplitter.wasm
+            splits/*.lss
           name: Latest
           tag_name: latest
           body: This contains the latest version of the auto splitter.
