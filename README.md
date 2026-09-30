@@ -4,15 +4,11 @@ LiveSplit auto splitter for [IGTAP](https://www.speedrun.com/IGTAP). Real time o
 
 ## Use
 
-Download `igtap_autosplitter.wasm` from the [latest release](../../releases/latest). Dragging it onto LiveSplit
-won't work; load it through the layout:
+Open a splits file from [`splits/`](splits), then right-click LiveSplit → **Edit Splits…** → **Activate**. LiveSplit
+downloads the splitter and keeps it updated; **Settings** next to Activate picks the run and which events split.
 
-1. Right-click LiveSplit → **Edit Layout…**
-2. Click **+** → **Control** → **Auto Splitting Runtime**.
-3. Double-click the new **Auto Splitting Runtime** entry.
-4. Next to **Script Path**, click **Browse…** and pick `igtap_autosplitter.wasm`.
-5. Set the Run mode and which events split, then click **OK**.
-6. Right-click → **Save Layout**.
+No Activate button, or testing a local build? Edit Layout → + → Control → Auto Splitting Runtime, and point its Script
+Path at `igtap_autosplitter.wasm` from the [latest release](../../releases/latest).
 
 Streaming from OBS? [obs-livesplit-one](https://github.com/LiveSplit/obs-livesplit-one) runs LiveSplit One as an OBS
 source and can load the same `.wasm` as its local auto splitter.
@@ -33,9 +29,8 @@ Each enabled event splits once per run:
 
 Starting a new game resets a full-game run.
 
-[`splits/`](splits) has a starter `.lss` per category (drag onto LiveSplit or Open Splits). The full-game ones list
-the events in the order above; reorder or remove splits to match your route. They leave out course clears, so untick
-**course clears** or add a split for each clear.
+The full-game splits list the events in the order above; reorder or remove splits to match your route. They leave out
+course clears, so untick **course clears** or add a split for each clear.
 
 ## Build
 
