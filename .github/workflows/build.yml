@@ -37,6 +37,7 @@ jobs:
           files: |
             target/wasm32-unknown-unknown/release/igtap_autosplitter.wasm
             splits/*.lss
+            splits/*.lsl
           name: Latest
           tag_name: latest
           body: This contains the latest version of the auto splitter.

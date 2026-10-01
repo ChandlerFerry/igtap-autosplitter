@@ -8,7 +8,9 @@ Open a splits file from [`splits/`](splits), then right-click LiveSplit → **Ed
 downloads the splitter and keeps it updated; **Settings** next to Activate picks the run and which events split.
 
 No Activate button, or testing a local build? Edit Layout → + → Control → Auto Splitting Runtime, and point its Script
-Path at `igtap_autosplitter.wasm` from the [latest release](../../releases/latest).
+Path at `igtap_autosplitter.wasm` from the [latest release](../../releases/latest). `IGTAP.lsl` is a layout with
+that component in it: open it (right-click → Open Layout), then Edit Layout → Layout Settings → Auto Splitting Runtime
+and set Script Path. Don't also Activate from the splits, or every event splits twice.
 
 Streaming from OBS? [obs-livesplit-one](https://github.com/LiveSplit/obs-livesplit-one) runs LiveSplit One as an OBS
 source and can load the same `.wasm` as its local auto splitter.
@@ -29,8 +31,9 @@ Each enabled event splits once per run:
 
 Starting a new game resets a full-game run.
 
-The full-game splits list the events in the order above; reorder or remove splits to match your route. They leave out
-course clears, so untick **course clears** or add a split for each clear.
+`FalseEnding.lss`, `TrueEnding.lss` and `TouchGrass.lss` follow the TAS routes, course clears included.
+`VmanCrash.lss` lists the events in the order above; reorder or remove splits to match your route. It leaves out course
+clears, so untick **course clears** or add a split for each clear.
 
 ## Build
 

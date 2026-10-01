@@ -493,6 +493,51 @@ mod tests {
     }
 
     #[test]
+    fn false_ending_route() {
+        fn push(t: &mut Vec<(Snap, u32)>, change: impl Fn(&mut Snap), splits: u32) {
+            let mut s = t.last().unwrap().0;
+            change(&mut s);
+            t.push((s, splits));
+        }
+        fn lap(t: &mut Vec<(Snap, u32)>, i: usize, finish: bool) {
+            let first = !t.iter().any(|(s, _)| s.courses[i].flashing);
+            push(t, |s| s.courses[i] = course(true, 0.0, false), 0);
+            push(t, |s| s.courses[i].time = 3.0, 0);
+            push(
+                t,
+                |s| s.courses[i] = course(false, 0.0, finish),
+                (finish && first) as u32,
+            );
+        }
+        let new_game = Snap {
+            scene: 1,
+            fresh: true,
+            moved: true,
+            ..Snap::default()
+        };
+        let t = &mut vec![(Snap::default(), 0), (new_game, 0)];
+        lap(t, 0, false);
+        lap(t, 0, true);
+        push(t, |s| s.flags[0] = true, 1);
+        lap(t, 1, true);
+        lap(t, 0, true);
+        push(t, |s| (s.flags[DASH], s.dashes) = (true, 1), 1);
+        lap(t, 2, false);
+        lap(t, 2, true);
+        lap(t, 1, true);
+        push(t, |s| s.flags[2] = true, 1);
+        push(t, |s| s.flags[7] = true, 1);
+        let mut run = Run::default();
+        for w in t.windows(2) {
+            assert_eq!(
+                step(Mode::FullGame, &ALL, &mut run, &w[0].0, &w[1].0).splits,
+                w[1].1
+            );
+        }
+        assert_eq!(t.iter().map(|(_, n)| n).sum::<u32>(), 7);
+    }
+
+    #[test]
     fn course_il() {
         let mut run = Run::default();
         let idle = Snap::default();
